@@ -1,3 +1,13 @@
 python-dotenv
 kaggle
 pandas
+matplotlib
+numpy
+image
+scikit-learn
+tensorflow
+keras
+minmaxscaler
+LSTM
+Dense
+train-test-split
