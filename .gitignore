@@ -1,0 +1,8 @@
+# Ignore virtual environment directory
+venv/
+
+# Ignore environment variables file
+.env
+
+# Ignoring large datasets to keep repository size manageable
+datasets/paysim1/
