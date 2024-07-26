@@ -113,4 +113,4 @@ st.sidebar.write("""
 """)
 
 st.sidebar.write("### Contact")
-st.sidebar.write("For any questions or feedback, please contact us at [email@example.com](mailto:email@example.com).")
+st.sidebar.write("For any questions or feedback, please connect with me on [LinkedIn](https://www.linkedin.com/in/sumaninsights/).")
