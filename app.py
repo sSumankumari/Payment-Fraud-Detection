@@ -13,6 +13,13 @@ def predict_fraud(data):
     probability = model.predict_proba(data)[:, 1]
     return prediction, probability
 
+# Set the page configuration, including title and layout
+st.set_page_config(
+    page_title="Payment Fraud Detection System",
+    page_icon="💳",
+    layout="centered",
+    initial_sidebar_state="expanded"
+)
 
 # Inject custom CSS for better styling
 st.markdown("""
