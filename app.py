@@ -134,7 +134,7 @@ st.write(pd.DataFrame([dict(zip(feature_order, [input_data[feature] for feature 
 if st.button("🔍 Predict"):
     prediction, probability = predict_fraud(list(input_data.values()))
     st.header("Prediction Result")
-    if prediction == 1:
+    if probability[0] >= 0.5:
         st.error(f"This transaction is predicted to be fraudulent with a probability of {probability[0]:.2f}.")
     else:
         st.success(f"This transaction is predicted to be non-fraudulent with a probability of {probability[0]:.2f}.")
