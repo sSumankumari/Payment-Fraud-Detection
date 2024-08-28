@@ -13,29 +13,75 @@ def predict_fraud(data):
     probability = model.predict_proba(data)[:, 1]
     return prediction, probability
 
-# Streamlit app layout
-st.title("Payment Fraud Detection")
 
-st.sidebar.header("Input Transaction Details")
+# Inject custom CSS for better styling
+st.markdown("""
+    <style>
+    .sidebar .sidebar-content {
+        background-color: #f8f9fa;
+    }
+    .sidebar .sidebar-content h4 {
+        color: #007bff;
+    }
+    .main .block-container {
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+    .stButton>button {
+        background-color: #007bff;
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 10px;
+    }
+    .stButton>button:hover {
+        background-color: #0056b3;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# Sidebar with detailed instructions
+st.sidebar.header("App Instructions")
+st.sidebar.write("""
+#### Follow the steps below to use the Payment Fraud Detection System:
+
+1. **Input Transaction Details:**
+   - Enter the step number.
+   - Select the transaction type.
+   - Input the transaction amount.
+   - Provide the old and new balance details for both origin and destination accounts.
+
+2. **Click the 'Predict' Button:**
+   - The system will predict whether the transaction is fraudulent.
+
+3. **Review Prediction Result:**
+   - See the predicted result and probability.
+""")
+
+# Collecting user inputs
+st.title("💳 Payment Fraud Detection System")
+
+st.markdown("#### Input Transaction Details")
 
 def user_input_features():
-    step = st.sidebar.number_input("Step", min_value=0, step=1)
+    step = st.number_input("Step", min_value=0, step=1)
 
     # Dropdown for transaction type, one-hot encoded
     transaction_types = ["CASH_IN", "CASH_OUT", "DEBIT", "PAYMENT", "TRANSFER"]
-    type = st.sidebar.selectbox("Type", transaction_types)
+    type = st.selectbox("Type", transaction_types)
 
     # Create one-hot encoded feature columns
     type_features = {t: 0 for t in transaction_types}
     type_features[type] = 1
 
-    amount = st.sidebar.number_input("Amount", min_value=0.0)
+    amount = st.number_input("Amount", min_value=0.0)
 
-    old_balance_origin = st.sidebar.number_input("Old Balance Origin", min_value=0.0)
-    new_balance_origin = st.sidebar.number_input("New Balance Origin", min_value=0.0)
-    old_balance_destination = st.sidebar.number_input("Old Balance Destination", min_value=0.0)
-    new_balance_destination = st.sidebar.number_input("New Balance Destination", min_value=0.0)
-    isFlaggedFraud = st.sidebar.selectbox("Is Flagged Fraud", ["No", "Yes"]) == "Yes"
+    old_balance_origin = st.number_input("Old Balance Origin", min_value=0.0)
+    new_balance_origin = st.number_input("New Balance Origin", min_value=0.0)
+    old_balance_destination = st.number_input("Old Balance Destination", min_value=0.0)
+    new_balance_destination = st.number_input("New Balance Destination", min_value=0.0)
+    isFlaggedFraud = st.selectbox("Is Flagged Fraud", ["No", "Yes"]) == "Yes"
 
     # Calculate derived features
     balance_diff = new_balance_origin - old_balance_origin
@@ -85,7 +131,7 @@ st.header("Transaction Details")
 # Ensure the DataFrame is in the correct column order
 st.write(pd.DataFrame([dict(zip(feature_order, [input_data[feature] for feature in feature_order]))]))
 
-if st.sidebar.button("Predict"):
+if st.button("🔍 Predict"):
     prediction, probability = predict_fraud(list(input_data.values()))
     st.header("Prediction Result")
     if prediction == 1:
@@ -93,6 +139,7 @@ if st.sidebar.button("Predict"):
     else:
         st.success(f"This transaction is predicted to be non-fraudulent with a probability of {probability[0]:.2f}.")
 
+# Sidebar with model information
 st.sidebar.header("Model Information")
 st.sidebar.write("### Model Details")
 st.sidebar.write(
